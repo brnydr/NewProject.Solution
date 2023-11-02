@@ -1,0 +1,51 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+@{
+    Layout = "_Layout";
+}
+
+@using SponsorMatch.Models;
+
+<h1>Welcome to the Sponsor Match!</h1>
+
+<hr>
+
+<h4>Athletes</h4>
+@if (Model["athletes"].Length == 0)
+{
+    <p>No athletes have been added yet!</p>
+}
+<ul>
+    @foreach (Athlete athlete in Model["athletes"])
+    {
+        <li>@Html.ActionLink(@athlete.Name, "Details", "Athletes", new { id = @athlete.AthleteId })</li>
+    }
+</ul>
+
+@if (User.Identity.IsAuthenticated)
+{
+    <h4>Athletes managed by @User.Identity.Name</h4>
+    @if (Model["athletes"].Length == 0)
+    {
+        <p>No athletes have been added yet!</p>
+    }
+    <ul>
+        @foreach (Athlete athlete in Model["athletes"])
+        {
+            <li>@Html.ActionLink(@athlete.Name, "Details", "Athletes", new { id = @athlete.AthleteId })</li>
+        }
+    </ul>
+}
+else
+{
+    <h4>Sponsors</h4>
+    <p>Please @Html.ActionLink("log in", "LogIn", "Account") to view or manage your sponsors.</p>
+}
+
+<hr>
+
+<p>@Html.ActionLink("Manage athletes", "Index", "Athletes")</p>
+<p>@Html.ActionLink("Manage sponsors", "Index", "Sponsors")</p>
+<p>@Html.ActionLink("Create or manage an account", "Index", "Account")</p>
